@@ -187,6 +187,8 @@
   },
   "active": "3c1c7d49fc57af93",
   "lastOpenFiles": [
+    "02-tarefas/backlog.md",
+    "02-tarefas/em-andamento.md",
     "05-agente/INSTRUCOES_AGENTE.md",
     "Bem-vindo.md",
     "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
@@ -197,8 +199,6 @@
     "00-contexto/CONTEXTO_EVOLUTION_API.md",
     "00-contexto/CONTEXTO_GERAL_PROJETO.md",
     "02-tarefas/concluido.md",
-    "02-tarefas/em-andamento.md",
-    "02-tarefas/backlog.md",
     "05-agente",
     "04-problemas",
     "03-sessoes",
