@@ -204,6 +204,13 @@
   },
   "active": "f442471a301d290c",
   "lastOpenFiles": [
+    "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
+    "00-contexto/CONTEXTO_INFRAESTRUTURA_VPS.md",
+    "00-contexto/CONTEXTO_LLM_AGENTE.md",
+    "00-contexto/CONTEXTO_SUPABASE.md",
+    "00-contexto/CONTEXTO_N8N.md",
+    "00-contexto/CONTEXTO_EVOLUTION_API.md",
+    "00-contexto/CONTEXTO_GERAL_PROJETO.md",
     "05-agente/INSTRUCOES_AGENTE.md",
     "02-tarefas/concluido.md",
     "02-tarefas/em-andamento.md",
