@@ -198,11 +198,23 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "claude-code-mcp:Toggle Claude Terminal": false
     }
   },
   "active": "f442471a301d290c",
   "lastOpenFiles": [
+    "05-agente/INSTRUCOES_AGENTE.md",
+    "02-tarefas/concluido.md",
+    "02-tarefas/em-andamento.md",
+    "02-tarefas/backlog.md",
+    "05-agente",
+    "04-problemas",
+    "03-sessoes",
+    "02-tarefas",
+    "01-decisoes",
+    "00-contexto",
+    "~p",
     "Bem-vindo.md"
   ]
 }
