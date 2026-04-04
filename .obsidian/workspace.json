@@ -24,17 +24,17 @@
         ]
       },
       {
-        "id": "d6b7cc77452f2f54",
+        "id": "7d3e52e26eb4d5e1",
         "type": "tabs",
         "children": [
           {
-            "id": "a2a5370e035e1076",
+            "id": "6a1ab43fadb7766d",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "claude-terminal-view",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "icon": "claude-logo",
+              "title": "Claude Terminal"
             }
           }
         ]
@@ -95,7 +95,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "294ba879ffcea8d6",
@@ -202,7 +202,7 @@
       "claude-code-mcp:Toggle Claude Terminal": false
     }
   },
-  "active": "f442471a301d290c",
+  "active": "6a1ab43fadb7766d",
   "lastOpenFiles": [
     "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
     "00-contexto/CONTEXTO_INFRAESTRUTURA_VPS.md",
