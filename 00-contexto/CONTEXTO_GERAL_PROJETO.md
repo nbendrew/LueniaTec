@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO GERAL DO PROJETO — AGENTE DE IA PARA PEDIDOS VIA WHATSAPP
 ================================================================================
-Última atualização: março/2025
-Versão: 1.0
+Última atualização: 05/04/2026
+Versão: 1.1
 
 AVISO IMPORTANTE
 ----------------
@@ -30,8 +30,16 @@ com IA, focado em pizzarias e hamburguerias.
 A IA atende o cliente do início ao fim — desde o "oi" até a finalização do
 pedido, coletando escolha dos itens, endereço de entrega e método de pagamento.
 
-Fase atual: desenvolvimento e testes. Principal dificuldade na parte técnica
-do agente.
+Fase atual: fluxo N8N em construção. Infraestrutura completa, banco de dados
+estruturado. Gargalo atual: montagem do payload e primeira chamada à LLM.
+
+Estrutura jurídica: ME no Simples Nacional — CNAE 6201-5/01
+(desenvolvimento de software não é permitido no MEI)
+
+Arquitetura de marca:
+- Luenia        → marca central, empresa de automação (existe, não desenvolvida agora)
+- Luenia Foods  → submarca ativa, foco em estabelecimentos de alimentação
+- Luenia Health → submarca planejada, área da saúde, desenvolvimento futuro
 
 
 ================================================================================
@@ -99,11 +107,15 @@ Containers Docker em /opt/evolution/:
 - Redis Alpine        → porta 6379
 - Evolution API v2.3.7 → porta 8080
 
+Container N8N em /opt/n8n/:
+- N8N               → porta 5678
+
 URLs:
 - Evolution API:  http://187.127.7.78:8080
 - Dashboard:      http://187.127.7.78:8080/manager
 - API Key:        tolokodedroga
-- Instância ativa: wa4 (WhatsApp conectado)
+- N8N:            http://187.127.7.78:5678
+- Instâncias ativas: wa4 e wa5 (ambas conectadas ao WhatsApp)
 
 
 ================================================================================
@@ -118,6 +130,9 @@ ESTRUTURA DE PASTAS NA VPS
 └── api/
     ├── docker-compose.yaml
     └── .env
+
+/opt/n8n/
+└── docker-compose.yaml
 
 
 ================================================================================
@@ -134,22 +149,22 @@ DESAFIOS TÉCNICOS MAPEADOS
 
 
 ================================================================================
-ESTRUTURA DO BANCO DE DADOS (SUPABASE) — PLANEJADA
+ESTRUTURA DO BANCO DE DADOS (SUPABASE) — IMPLEMENTADA
 ================================================================================
 
-Tabela: contatos
-- telefone   (text, chave primária)
-- nome       (text)
-- criado_em  (timestamp)
+Projeto: https://wyngopoqjvegqpvttjxb.supabase.co (região São Paulo)
+Arquitetura: multi-tenant com estabelecimento_id em todas as tabelas
 
-Tabela: mensagens
-- id         (uuid, chave primária, gerado automaticamente)
-- telefone   (text, chave estrangeira → contatos)
-- role       (text: "user" ou "assistant")
-- conteudo   (text)
-- criado_em  (timestamp)
+Tabelas criadas e operacionais:
+- estabelecimentos  → registro dos clientes (donos de restaurante)
+- contatos          → clientes que entram em contato via WhatsApp
+- mensagens         → histórico completo das conversas (role: user/assistant)
+- cardapio          → itens disponíveis, consultados dinamicamente
+- promocoes         → promoções com campo `ativo` (true/false)
+- pedidos           → registro dos pedidos finalizados (campo itens em JSONB)
 
-Tabelas futuras planejadas: cardapio, promocoes, pedidos
+Observação: RLS habilitado em todas as tabelas.
+Temporariamente desabilitado durante debug do N8N — reativar com políticas antes da produção.
 
 
 ================================================================================
@@ -158,6 +173,13 @@ ROADMAP DE NEGÓCIO
 
 Estágio atual: Estágio 1 — validação do produto e primeiros clientes
 Trajetória planejada: Freelancer → Consultor → Agência → Professor
+
+Posicionamento Luenia Foods:
+"Implementação e gerenciamento personalizado de atendimento automático via
+WhatsApp — para quem não tem margem pra erro."
+
+Skills de vendas e marketing já construídas (Estágio 1 e 2):
+- Prospecção, Copywriting, Objeções, Produção de conteúdo, Posicionamento
 
 
 ================================================================================

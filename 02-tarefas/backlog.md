@@ -1,5 +1,5 @@
 # Backlog
-Última atualização: 04/04/2026
+Última atualização: 05/04/2026
 
 ---
 
@@ -42,8 +42,15 @@
 
 ## Negócio / Produto
 
+- [ ] Formalizar abertura do ME no Simples Nacional (CNAE 6201-5/01)
+- [ ] Contratar contador — escritório digital, R$100–150/mês
 - [ ] Definir precificação do MVP
 - [ ] Identificar e abordar primeiros clientes para teste
 - [ ] Planejar escopo e interface do painel web (gerenciamento de cardápio, promoções e pedidos)
 - [ ] Planejar ativação/desativação de promoções via comando no WhatsApp (MVP)
+
+## Skills — Luenia Foods
+
+- [ ] Construir skill de personal branding
+- [ ] Construir skill de prova social e cases (aguarda clientes reais)
 
