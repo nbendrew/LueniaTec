@@ -44,7 +44,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Explorador de arquivos"
+              "title": "Files"
             }
           },
           {
@@ -174,34 +174,34 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Abrir a troca rápida": false,
-      "graph:Abrir visualização em gráfico": false,
-      "canvas:Criar novo canvas": false,
-      "daily-notes:Abrir a nota de hoje": false,
-      "templates:Inserir modelo": false,
-      "command-palette:Abrir paleta de comandos": false,
-      "bases:Criar nova base": false,
       "obsidian-git:Open Git source control": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
       "claude-code-mcp:Toggle Claude Terminal": false
     }
   },
   "active": "3c1c7d49fc57af93",
   "lastOpenFiles": [
-    "conflict-files-obsidian-git.md",
-    "ONBOARDING-PARCEIRO.md",
-    "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
-    "00-contexto/CONTEXTO_GERAL_PROJETO.md",
-    "00-contexto/CONTEXTO_EVOLUTION_API.md",
-    "00-contexto/CONTEXTO_LLM_AGENTE.md",
-    "00-contexto/CONTEXTO_SUPABASE.md",
+    "00-contexto/CONTEXTO_MARKETING_LUENIA_FOODS.md",
     "05-agente/INSTRUCOES_AGENTE.md",
     "03-sessoes/2026-04-05.md",
-    "02-tarefas/em-andamento.md",
+    "00-contexto/CONTEXTO_GERAL_PROJETO.md",
+    "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
+    "02-tarefas/concluido.md",
     "02-tarefas/backlog.md",
+    "ONBOARDING-PARCEIRO.md",
+    "02-tarefas/em-andamento.md",
     "Bem-vindo.md",
     "00-contexto/CONTEXTO_INFRAESTRUTURA_VPS.md",
+    "00-contexto/CONTEXTO_LLM_AGENTE.md",
+    "00-contexto/CONTEXTO_SUPABASE.md",
     "00-contexto/CONTEXTO_N8N.md",
-    "02-tarefas/concluido.md",
+    "00-contexto/CONTEXTO_EVOLUTION_API.md",
     "05-agente",
     "04-problemas",
     "03-sessoes",
