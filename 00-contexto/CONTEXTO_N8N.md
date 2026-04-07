@@ -2,7 +2,7 @@
 CONTEXTO DO CHAT — N8N
 ================================================================================
 Última atualização: 07/04/2026
-Versão: 1.1
+Versão: 1.2
 
 AVISO IMPORTANTE
 ----------------
@@ -131,13 +131,22 @@ Select cardápio e Select promoções
 PRÓXIMOS NÓS A CONSTRUIR
 ================================================================================
 
-Bloqueador: definir system prompt no chat do agente antes de montar o payload.
+Bloqueadores resolvidos:
+✓ System prompt da Sofia — escrito e validado
+✓ Tabela `configuracoes` criada no Supabase
+✓ Formatação do cardápio definida: lista simples, uma linha por item
+  Exemplo: "- Pizza Calabresa (G): R$45,00"
 
-1. Edit Fields — monta payload da LLM (system prompt + histórico + cardápio + promoções)
-2. HTTP Request — chama OpenAI
-3. Edit Fields — extrai resposta da LLM
-4. Supabase — Insert mensagens (role: assistant)
-5. HTTP Request — Evolution API envia resposta ao cliente
+Sequência a implementar:
+1. Supabase — Select configuracoes (busca dados do estabelecimento por estabelecimento_id)
+2. Edit Fields — monta payload da LLM:
+   - system prompt com variáveis substituídas (nome, horário, área, pagamento, tempo, observações, cardápio, promoções)
+   - histórico no formato [{role, content}] ordenado por criado_em ASC
+   - mensagem nova do cliente
+3. HTTP Request — chama OpenAI (gpt-4o-mini)
+4. Edit Fields — extrai resposta da LLM
+5. Supabase — Insert mensagens (role: assistant)
+6. HTTP Request — Evolution API envia resposta ao cliente
 
 
 ================================================================================
@@ -156,9 +165,10 @@ DESAFIOS TÉCNICOS MAPEADOS
 PENDÊNCIAS / PRÓXIMOS PASSOS NESTE TEMA
 ================================================================================
 
-- Definir system prompt no chat LLM/Agente
+- Definir formatação do cardápio para injeção no prompt (definido: lista simples, uma linha por item)
+- Montar nó Select configuracoes no N8N
 - Montar Edit Fields com payload completo da LLM
-- Fechar os 5 nós restantes e testar fluxo de ponta a ponta
+- Fechar os nós restantes e testar fluxo de ponta a ponta
 - Reativar RLS no Supabase com políticas corretas antes de produção
 
 
@@ -179,7 +189,8 @@ UUID do estabelecimento — nunca hardcoded. Sempre buscado dinamicamente pelo T
 \n invisível — campo telefone_whatsapp no Supabase continha caractere invisível
   causando falha no filtro. Identificado e corrigido.
 
-contato_id — a tabela mensagens não tem campo telefone, apenas contato_id.
-  É obrigatório buscar o contato antes do Insert de mensagens.
+Formatação do cardápio — lista simples, uma linha por item.
+  Exemplo: "- Pizza Calabresa (G): R$45,00"
+  Concatenada em string antes de injetar na variável {cardapio} do system prompt.
 
 ================================================================================
