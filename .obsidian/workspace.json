@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "294ba879ffcea8d6",
@@ -187,6 +188,8 @@
   },
   "active": "3c1c7d49fc57af93",
   "lastOpenFiles": [
+    "03-sessoes/2026-04-03-n8n.md",
+    "03-sessoes/2026-04-07-supabase.md",
     "03-sessoes/2026-04-07.md",
     "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
     "00-contexto/CONTEXTO_MARKETING_LUENIA_FOODS.md",

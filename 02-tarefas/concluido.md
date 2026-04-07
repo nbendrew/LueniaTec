@@ -1,5 +1,5 @@
 # Concluído
-Última atualização: 04/04/2026
+Última atualização: 07/04/2026
 
 ---
 
@@ -26,14 +26,16 @@
 
 ## Supabase
 
-- [x] Projeto criado na região São Paulo (`https://wyngopoqjvegqpvttjxb.supabase.co`)
-- [x] Tabela `estabelecimentos` criada (com registro de teste)
-- [x] Tabela `contatos` criada
-- [x] Tabela `mensagens` criada
-- [x] Tabela `cardapio` criada (com 4 itens de teste)
-- [x] Tabela `promocoes` criada
-- [x] Tabela `pedidos` criada
-- [x] RLS habilitado em todas as tabelas
+- [x] Projeto criado na região São Paulo (`https://wyngopoqjvegqpvttjxb.supabase.co`) — PostgreSQL 17
+- [x] Arquitetura multi-tenant definida — `estabelecimento_id` em todas as tabelas
+- [x] Tabela `estabelecimentos` criada e validada (RLS ativo, 3 registros)
+- [x] Tabela `contatos` criada e validada (RLS ativo, 4 registros) — UNIQUE(estabelecimento_id, telefone)
+- [x] Tabela `mensagens` criada e validada (RLS ativo, 16 registros) — FK contato_id declarada formalmente
+- [x] Tabela `cardapio` criada e validada (RLS ativo, 7 itens de teste)
+- [x] Tabela `promocoes` criada e validada (RLS ativo, 2 registros)
+- [x] Tabela `pedidos` criada e validada (RLS ativo) — campo itens em JSONB
+- [x] RLS habilitado e corrigido em todas as tabelas
+- [x] Acesso direto ao banco via MCP do Supabase configurado e funcionando
 
 ---
 

@@ -54,3 +54,21 @@
 - [ ] Construir skill de personal branding
 - [ ] Construir skill de prova social e cases (aguarda clientes reais)
 
+---
+
+## Automação de Conteúdo — Instagram
+
+Pipeline N8N para produção e postagem automática de carrosséis.
+Fluxo: Schedule Trigger → Claude API → Ideogram API → Canva API → Telegram (aprovação) → Buffer (postagem)
+
+- [ ] Decidir entre versão completa (~R$150/mês) ou econômica (~R$55/mês)
+  - Completa: N8N Cloud + Claude API + Ideogram + Buffer
+  - Econômica: N8N self-hosted + Flux + Meta Business Suite
+- [ ] Gerar JSON do workflow completo para importar no N8N
+- [ ] Configurar nó da Claude API — geração de tema + roteiro + prompts
+- [ ] Configurar nó da Ideogram API — geração de imagens
+- [ ] Testar integração com Canva API — montagem automática dos slides
+- [ ] Configurar Telegram para envio de preview para aprovação
+- [ ] Configurar Buffer para agendamento e postagem no Instagram
+- [ ] Testar fluxo completo de ponta a ponta
+

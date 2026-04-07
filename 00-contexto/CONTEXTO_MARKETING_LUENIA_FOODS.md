@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO DO CHAT — MARKETING / LUENIA FOODS
 ================================================================================
-Última atualização: abril/2025
-Versão: 1.0
+Última atualização: 07/04/2026
+Versão: 1.1
 
 AVISO IMPORTANTE
 ----------------
@@ -149,7 +149,7 @@ Escopo: tratamento de objeções durante apresentação presencial
 Entrega: objeção + o que está por trás + estratégia + resposta + como retomar
 Atualizar com: objeções novas que surgirem na prática
 
---- ESTÁGIO 2 (em construção) ---
+--- ESTÁGIO 2 (concluídas) ---
 
 PRODUÇÃO DE CONTEÚDO (conteudo.skill)
 Escopo: Instagram — carrossel (prioridade) + stories
@@ -170,6 +170,12 @@ Formato fixo: 1080x1350px, proporção 4:5, sem texto sobreposto
 Entrega: prompt principal + explicação camada a camada + 2 variações + dicas de ajuste
 7 camadas do prompt: assunto / estilo / paleta / composição / atmosfera / iluminação / técnico
 Atualizar com: prompts que geraram bons resultados + paleta oficial quando definida
+
+CARROSSEL (carrossel.skill)
+Escopo: roteirização e produção de carrosséis virais para Instagram
+Base: análise de 40 slides reais de alta performance
+Entrega: roteiro slide a slide + prompts de imagem + guia de montagem no Canva
+Atualizar com: resultados reais de alcance e engajamento por formato
 
 --- PENDENTES ---
 
@@ -202,6 +208,7 @@ Estágio 1 (agora):
 Estágio 2 (consultor):
 ✅ Posicionamento de nicho
 ✅ Produção de conteúdo
+✅ Carrosséis (skill instalada)
 ⏳ Personal branding
 ⏸️ Prova social e cases
 
@@ -225,6 +232,36 @@ Instagram — prospecção via DM + canal de conteúdo
 WhatsApp — prospecção direta (canal principal)
 Nano Banana 2 (Gemini Flash) — geração de criativos visuais
 Canva — montagem de carrosséis e stories
+Ideogram API — geração de imagens para automação de conteúdo (planejado)
+Buffer — agendamento e postagem no Instagram (planejado)
+
+
+================================================================================
+AUTOMAÇÃO DE CONTEÚDO — PIPELINE N8N (PLANEJADO)
+================================================================================
+
+Objetivo: automatizar 100% da produção e postagem de carrosséis no Instagram.
+
+Fluxo:
+Schedule Trigger (diário às 8h)
+  ↓
+Claude API — gera tema do dia + roteiro + prompts de imagem
+  ↓
+Ideogram API — gera imagens (~R$0,06/imagem)
+  ↓
+Canva API — monta os slides automaticamente
+  ↓
+Telegram — envia preview para aprovação
+  ↓
+Buffer — agenda e posta no Instagram
+
+Custo estimado — versão completa: ~R$150/mês
+  N8N Cloud R$60 + Claude API R$15 + Ideogram R$60 + Buffer R$15
+
+Custo estimado — versão econômica: ~R$55/mês
+  N8N self-hosted + Flux + Meta Business Suite
+
+Status: mapeado, não implementado. Aguarda decisão de versão e montagem do fluxo no N8N.
 
 
 ================================================================================
@@ -239,5 +276,7 @@ HISTÓRICO DE DECISÕES E APRENDIZADOS
 - Paleta da Luenia Foods em definição — resultado dos testes no Nano Banana define
 - Posicionamento revisado: "não para qualquer um" → "para quem não tem margem pra erro"
 - Skills funcionam como documentos vivos — atualizadas conforme o negócio evolui
+- Skill de carrossel criada — base em análise de 40 slides reais de alta performance
+- Pipeline de automação de conteúdo mapeado — implementação pendente de decisão de custo
 
 ================================================================================

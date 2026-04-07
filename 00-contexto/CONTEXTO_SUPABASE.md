@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO DO CHAT — SUPABASE
 ================================================================================
-Última atualização: março/2025
-Versão: 1.0
+Última atualização: 07/04/2026
+Versão: 1.1
 
 AVISO IMPORTANTE
 ----------------
@@ -28,54 +28,53 @@ Este chat cobre tudo relacionado ao Supabase:
 STATUS ATUAL DO SUPABASE
 ================================================================================
 
-Conta criada: sim (presumido)
-Tabelas criadas: nenhuma ainda
-Próximo passo: criar tabelas iniciais (contatos e mensagens)
+Projeto:        agente-ia
+Região:         São Paulo (sa-east-1)
+URL:            https://wyngopoqjvegqpvttjxb.supabase.co
+Status:         ACTIVE_HEALTHY
+PostgreSQL:     versão 17
+Plano:          Free (Cloud) — VPS sem RAM suficiente para self-hosted
+Acesso MCP:     ativo — Claude acessa o banco diretamente sem SQL Editor
+
+Todas as tabelas criadas, validadas e com RLS ativo.
 
 
 ================================================================================
-ESTRUTURA DO BANCO DE DADOS PLANEJADA
+ESTRUTURA DO BANCO DE DADOS — IMPLEMENTADA
 ================================================================================
+
+Arquitetura: multi-tenant — `estabelecimento_id` presente em todas as tabelas.
+
+--- Tabela: estabelecimentos ---
+Objetivo: registro dos clientes (donos de restaurante)
+Status: ✓ RLS ativo — 3 registros
 
 --- Tabela: contatos ---
-Objetivo: registrar cada cliente que entra em contato
-
-| coluna     | tipo      | detalhe                        |
-|------------|-----------|--------------------------------|
-| telefone   | text      | chave primária                 |
-| nome       | text      | nome do contato                |
-| criado_em  | timestamp | primeira vez que entrou em contato |
-
+Objetivo: clientes que entram em contato via WhatsApp
+Constraint: UNIQUE(estabelecimento_id, telefone)
+  → mesmo cliente pode existir em múltiplos estabelecimentos sem conflito
+Status: ✓ RLS ativo — 4 registros
 
 --- Tabela: mensagens ---
-Objetivo: armazenar o histórico completo de cada conversa
+Objetivo: histórico completo das conversas
+Chave estrangeira: contato_id → contatos (declarada formalmente)
+Campo role: "user" ou "assistant"
+  → formato exigido pela LLM: [{role, content}] ordenado por criado_em ASC
+Status: ✓ RLS ativo — 16 registros
 
-| coluna     | tipo      | detalhe                                      |
-|------------|-----------|----------------------------------------------|
-| id         | uuid      | chave primária (gerado automaticamente)      |
-| telefone   | text      | chave estrangeira → contatos                 |
-| role       | text      | "user" ou "assistant"                        |
-| conteudo   | text      | texto da mensagem                            |
-| criado_em  | timestamp | usado para ordenar a conversa cronologicamente |
+--- Tabela: cardapio ---
+Objetivo: itens disponíveis, consultados dinamicamente a cada chamada
+Obs: tamanhos e adicionais adiados para depois do MVP
+Status: ✓ RLS ativo — 7 itens de teste
 
-Observação sobre o campo `role`:
-O histórico enviado para a LLM exige o formato:
-[
-  {"role": "user", "content": "oi, quero uma pizza"},
-  {"role": "assistant", "content": "Olá! Qual sabor você deseja?"},
-  {"role": "user", "content": "calabresa"}
-]
-Sem este campo, a IA não distingue o que foi dito pelo cliente
-do que foi dito por ela mesma.
+--- Tabela: promocoes ---
+Objetivo: promoções com campo `ativo` (boolean)
+Status: ✓ RLS ativo — 2 registros
 
-
---- Tabelas futuras planejadas ---
-
-| tabela     | objetivo                                         |
-|------------|--------------------------------------------------|
-| cardapio   | itens disponíveis, consultados dinamicamente     |
-| promocoes  | promoções com campo `ativo` (true/false)         |
-| pedidos    | registro dos pedidos finalizados                 |
+--- Tabela: pedidos ---
+Objetivo: registro dos pedidos finalizados
+Campo itens: JSONB — flexível para o MVP
+Status: ✓ RLS ativo — sem registros ainda
 
 
 ================================================================================
@@ -93,41 +92,36 @@ LÓGICA DE PROMOÇÕES DINÂMICAS
 PENDÊNCIAS / PRÓXIMOS PASSOS NESTE TEMA
 ================================================================================
 
-- Criar tabela `contatos` no Supabase
-- Criar tabela `mensagens` no Supabase
-- Obter URL e chave de API do Supabase para integrar com N8N
-- Testar insert e select via N8N
-- Planejar estrutura das tabelas `cardapio` e `promocoes`
+- Reativar RLS com políticas corretas antes de ir para produção
+  (atualmente ativo mas sem políticas definidas — acesso via service_role)
+- Definir estrutura definitiva da tabela `pedidos` para registro de pedidos finalizados
+- Planejar como o agente vai registrar um pedido finalizado (trigger ou nó no N8N)
 
 
 ================================================================================
 HISTÓRICO DE DECISÕES E APRENDIZADOS
 ================================================================================
 
-Decisões tomadas:
+07/04/2026 — Arquitetura
+  Multi-tenant com estabelecimento_id em todas as tabelas.
+  Supabase Cloud plano Free — VPS sem RAM suficiente para self-hosted.
 
-Arquitetura multi-tenant com estabelecimento_id em todas as tabelas
-Supabase Cloud (plano Free) — VPS não tem RAM suficiente para self-hosted
-Tamanhos e adicionais no cardápio adiados para depois do MVP
-Campo itens em pedidos usando JSONB — flexível para o MVP
+07/04/2026 — Cardápio
+  Tamanhos e adicionais adiados para depois do MVP.
 
-Infraestrutura:
+07/04/2026 — Pedidos
+  Campo itens usando JSONB — flexível para o MVP.
 
-Projeto criado na região São Paulo
-URL: https://wyngopoqjvegqpvttjxb.supabase.co
+07/04/2026 — Contatos
+  UNIQUE(estabelecimento_id, telefone) — mesmo cliente em múltiplos
+  estabelecimentos sem conflito de chave.
 
-Tabelas criadas:
+07/04/2026 — Mensagens
+  Chave estrangeira contato_id declarada formalmente.
+  RLS corrigido em estabelecimentos e contatos que estavam sem.
 
-✓ estabelecimentos — com registro de teste inserido
-✓ contatos
-✓ mensagens
-✓ cardapio — com 4 itens de teste
-✓ promocoes
-✓ pedidos
-✓ RLS habilitado em todas
-
-Próximo passo:
-
-Chat N8N — configurar credenciais do Supabase e testar as queries do fluxo
+07/04/2026 — Acesso MCP
+  Claude acessa o banco diretamente via MCP do Supabase.
+  Não é necessário usar o SQL Editor para consultas e alterações.
 
 ================================================================================

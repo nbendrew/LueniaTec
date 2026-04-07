@@ -1,21 +1,21 @@
 # Em Andamento
-Última atualização: 04/04/2026
+Última atualização: 07/04/2026
 
 ---
 
 ## N8N — Fechamento do Fluxo Principal
 
-### Pendências imediatas (próxima sessão)
+### Bloqueador atual
+Antes de montar o payload da LLM, é necessário definir o system prompt no chat do agente.
+**Próxima ação: Chat LLM/Agente → definir system prompt base.**
 
-- [ ] Ativar `Execute Once` no nó **Select cardápio**
-- [ ] Ativar `Execute Once` no nó **Select promoções**
-- [ ] Testar Select promoções (ainda não testado)
-- [ ] Montar nó `Edit Fields` consolidando payload da LLM (system prompt + histórico + cardápio + promoções)
-- [ ] Configurar `Aggregate` para formatar o histórico no padrão `[{role, content}]`
-- [ ] HTTP Request — chamar LLM (OpenAI gpt-4o-mini recomendado para teste inicial)
-- [ ] Nó para extrair resposta da LLM
+### Próximos nós a construir (em ordem)
+
+- [ ] Edit Fields — monta payload da LLM (system prompt + histórico + cardápio + promoções)
+- [ ] HTTP Request — chama OpenAI
+- [ ] Edit Fields — extrai resposta da LLM
 - [ ] Supabase — Insert mensagens (role: assistant)
-- [ ] HTTP Request — Evolution API enviar resposta ao cliente
+- [ ] HTTP Request — Evolution API envia resposta ao cliente
 
 ### Estado atual do fluxo
 
@@ -33,22 +33,22 @@ Supabase — busca estabelecimento por TelefoneE            ✓
   ↓
 HTTP Request — upsert contatos                            ✓
   ↓
-Supabase — Get contato (buscar contato_id)                ✓
+Supabase — busca contato (retorna contato_id)             ✓
   ↓
 Supabase — Insert mensagens (role: user)                  ✓
   ↓
-Supabase — Select histórico mensagens                     ✓
+Supabase — Select mensagens (histórico)                   ✓
   ↓
-Supabase — Select cardápio                                ✓ (Execute Once pendente)
+Supabase — Select cardápio (Execute Once)                 ✓
   ↓
-Supabase — Select promoções                               ⚠ (não testado)
+Supabase — Select promoções (Execute Once)                ✓
   ↓
-[próximos nós a construir — ver lista acima]
+[próximos nós — ver lista acima]
 ```
 
 ---
 
 ## Supabase — Segurança
 
-- [ ] Reativar RLS em todas as tabelas com políticas corretas (desabilitado temporariamente durante debug)
+- [ ] Reativar RLS com políticas corretas (desabilitado temporariamente durante debug)
 
