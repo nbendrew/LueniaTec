@@ -5,17 +5,20 @@
 
 ## N8N — Fechamento do Fluxo Principal
 
-### Bloqueador atual
-Antes de montar o payload da LLM, é necessário definir o system prompt no chat do agente.
-**Próxima ação: Chat LLM/Agente → definir system prompt base.**
-
 ### Próximos nós a construir (em ordem)
 
-- [ ] Edit Fields — monta payload da LLM (system prompt + histórico + cardápio + promoções)
-- [ ] HTTP Request — chama OpenAI
+- [ ] Edit Fields — monta payload da LLM (system prompt substituído + histórico + cardápio + promoções)
+- [ ] HTTP Request — chama OpenAI (gpt-4o-mini)
 - [ ] Edit Fields — extrai resposta da LLM
 - [ ] Supabase — Insert mensagens (role: assistant)
 - [ ] HTTP Request — Evolution API envia resposta ao cliente
+- [ ] Implementar mecanismo de atendimento humano (detectar sinalização da Sofia, notificar estabelecimento, pausar fluxo)
+
+### Pré-requisitos antes de montar o payload
+
+- [ ] Definir formatação do cardápio para injeção no prompt
+- [ ] Definir formatação das promoções — string vazia ou mensagem neutra quando não houver ativas
+- [ ] Alinhar nomenclatura dos campos dinâmicos com colunas do Supabase
 
 ### Estado atual do fluxo
 

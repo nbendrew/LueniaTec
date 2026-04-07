@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO DO CHAT — LLM / AGENTE DE IA
 ================================================================================
-Última atualização: março/2025
-Versão: 1.0
+Última atualização: 07/04/2026
+Versão: 1.1
 
 AVISO IMPORTANTE
 ----------------
@@ -17,7 +17,7 @@ ESCOPO DESTE CHAT
 ================================================================================
 
 Este chat cobre tudo relacionado à LLM e ao comportamento do agente:
-- Escolha e avaliação do modelo (OpenAI, Claude, Gemini)
+- Escolha e avaliação do modelo
 - Arquitetura e escrita do system prompt
 - Injeção dinâmica de cardápio e promoções
 - Gerenciamento de contexto e histórico
@@ -30,53 +30,161 @@ Este chat cobre tudo relacionado à LLM e ao comportamento do agente:
 STATUS ATUAL
 ================================================================================
 
-LLM escolhida: em avaliação (OpenAI / Claude / Gemini)
-System prompt: ainda não desenvolvido
-Contexto dinâmico: planejado, não implementado
+LLM escolhida:    gpt-4o-mini (OpenAI)
+Agente:           Sofia — identidade, fluxo e regras definidos
+System prompt:    escrito e validado
+Contexto dinâmico: definido — variáveis injetadas via tabela `configuracoes`
 
 
 ================================================================================
-DECISÕES TÉCNICAS RELEVANTES
+IDENTIDADE DO AGENTE — SOFIA
 ================================================================================
 
-- O cardápio NÃO será hard-coded no system prompt
-  → Será consultado dinamicamente no Supabase a cada chamada
+Nome: Sofia
+Perfil: jovem, simpática e calorosa
+Tom: informal, mas comprometido com o atendimento
+Emojis: com moderação — apenas quando reforçam calor humano. Nunca em sequência.
 
-- As promoções ativas serão injetadas no system prompt pelo N8N
-  → Consultadas na tabela `promocoes` antes de cada chamada à LLM
+Escopo de atuação:
+- Responde dúvidas sobre o estabelecimento
+- Conduz pedidos do início ao fim
+- Fora do escopo: desvia com leveza e redireciona
+- Reclamações: redireciona para o estabelecimento
+- Insistência fora do escopo: ignora e redireciona
 
-- O histórico completo da conversa será enviado como contexto a cada chamada
-  → Formato: array de objetos {role, content} ordenados por criado_em
-  → Resolve o problema do agente "esquecer" o pedido entre mensagens
+Formato das respostas:
+- Mensagens curtas e diretas
+- Listas com quebra de linha, nunca em texto corrido
+- Nome do cliente apenas na saudação inicial e na finalização
+- Nunca linguagem de robô, jargões técnicos ou respostas genéricas
 
 
 ================================================================================
-DESAFIOS TÉCNICOS MAPEADOS
+FLUXO DE ATENDIMENTO
 ================================================================================
 
-- Pedidos ambíguos ou incompletos (ex: "uma pizza" sem especificar sabor)
-- Múltiplos itens na mesma mensagem
-- Mudança de pedido no meio da conversa
-- Endereços incompletos
-- Itens fora do cardápio (evitar que a IA invente itens inexistentes)
-- Tratamento de áudios (transcrição antes de passar para a LLM)
+1. Saudação — usa nome do WhatsApp se adequado; caso contrário, pergunta
+2. Coleta do pedido — tira dúvidas sobre cardápio; nunca inventa itens
+3. Modalidade — entrega ou retirada
+4. Confirmação do pedido — lista com preços unitários, taxa de entrega e total
+5. Endereço — apenas para entrega; pede informações faltantes se incompleto
+6. Forma de pagamento — informa opções disponíveis; troco se dinheiro
+7. Finalização — resumo completo com tempo estimado
+
+Alterações aceitas a qualquer momento, com reconfirmação do pedido.
+
+
+================================================================================
+REGRAS DE COMPORTAMENTO
+================================================================================
+
+CARDÁPIO
+- Nunca inventa itens, preços, tamanhos ou variações fora do cardápio
+- Item inexistente: informa e apresenta o cardápio completo
+
+MÍDIA
+- Foto ou vídeo: pede gentilmente que envie mensagem de texto
+- Áudio: tratado pelo fluxo N8N antes de chegar à Sofia
+
+ATENDIMENTO HUMANO — acionar imediatamente nos seguintes casos:
+- Cliente grosseiro ou agressivo
+- Cliente impaciente de forma persistente
+- Situação de emergência
+- Suspeita de teste automatizado do bot
+- Cliente confuso após 2 tentativas sem progresso
+
+Sinalização padrão: "Vou chamar alguém para te ajudar, aguarda um momento 😊"
+Após sinalizar: aguarda. Não continua o atendimento.
+Se não houver atendente disponível: prossegue normalmente.
+
+
+================================================================================
+VARIÁVEIS DINÂMICAS DO SYSTEM PROMPT
+================================================================================
+
+Injetadas pelo N8N antes de cada chamada, a partir da tabela `configuracoes`:
+
+{nome_estabelecimento}
+{horario_funcionamento}
+{area_entrega}
+{formas_pagamento}
+{tempo_estimado_entrega}
+{cardapio}
+{promocoes}
+
+Regra das promoções: se não houver promoções ativas, injetar string vazia.
+Sofia nunca menciona que não há promoções.
+
+
+================================================================================
+TABELA CONFIGURACOES — PENDENTE NO SUPABASE
+================================================================================
+
+Criar tabela `configuracoes` com os campos:
+- id
+- estabelecimento_id
+- nome_agente
+- horario_funcionamento
+- area_entrega
+- formas_pagamento
+- tempo_estimado_entrega
+- criado_em
+
+Uma linha por estabelecimento.
+
+
+================================================================================
+DECISÕES TÉCNICAS
+================================================================================
+
+- Cardápio NÃO hard-coded — consultado dinamicamente no Supabase a cada chamada
+- Promoções injetadas dinamicamente — consultadas antes de cada chamada à LLM
+- Histórico completo enviado como contexto — formato [{role, content}] ordenado por criado_em ASC
+- Contexto do negócio via tabela `configuracoes` — não hard-coded no prompt
 
 
 ================================================================================
 PENDÊNCIAS / PRÓXIMOS PASSOS NESTE TEMA
 ================================================================================
 
-- Definir qual LLM será usada no MVP
-- Desenvolver o system prompt base do agente
-- Planejar como o cardápio será formatado para o prompt
-- Planejar como as promoções serão injetadas
+- Criar tabela `configuracoes` no Supabase
+- Definir formatação do cardápio antes de injetar no prompt (chat N8N)
+- Definir formatação das promoções — string vazia quando não houver ativas
+- Implementar mecanismo de atendimento humano no N8N:
+  detectar sinalização da Sofia → notificar estabelecimento → pausar fluxo → aguardar retomada manual
+- Alinhar nomenclatura dos campos dinâmicos com colunas do Supabase
 - Testar comportamento em situações de borda
+
+
+================================================================================
+DESAFIOS TÉCNICOS MAPEADOS
+================================================================================
+
+- Pedidos ambíguos ou incompletos (ex: "uma pizza" sem sabor)
+- Múltiplos itens na mesma mensagem
+- Mudança de pedido no meio da conversa
+- Endereços incompletos
+- Itens fora do cardápio (prevenção de alucinação)
+- Tratamento de áudios (transcrição antes de passar para a LLM)
+- Mecanismo de atendimento humano e retomada automática
 
 
 ================================================================================
 HISTÓRICO DE DECISÕES E APRENDIZADOS
 ================================================================================
 
-(Este bloco será atualizado conforme o chat evoluir)
+07/04/2026 — Modelo
+  gpt-4o-mini definido para o MVP.
+
+07/04/2026 — Identidade
+  Agente nomeada Sofia. Perfil, tom e regras de comportamento definidos.
+
+07/04/2026 — System prompt
+  Escrito e validado. Variáveis dinâmicas definidas.
+  Contexto do negócio via tabela `configuracoes` — não hard-coded.
+
+07/04/2026 — Promoções
+  Quando não houver promoções ativas, injetar string vazia.
+  Sofia nunca menciona ausência de promoções.
 
 ================================================================================
