@@ -27,7 +27,6 @@
 
 ## Supabase
 
-- [ ] Criar tabela `configuracoes` (id, estabelecimento_id, nome_agente, horario_funcionamento, area_entrega, formas_pagamento, tempo_estimado_entrega, criado_em)
 - [ ] Definir estrutura definitiva da tabela `pedidos` para registro de pedidos finalizados
 - [ ] Planejar como o agente vai registrar um pedido finalizado (trigger ou nó específico no N8N)
 

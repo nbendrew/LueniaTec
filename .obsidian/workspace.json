@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "05-agente/INSTRUCOES_AGENTE.md",
+                "file": "02-tarefas/backlog.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "INSTRUCOES_AGENTE"
+              "title": "backlog"
             }
           }
         ]
@@ -187,6 +187,8 @@
   },
   "active": "3c1c7d49fc57af93",
   "lastOpenFiles": [
+    "00-contexto/CONTEXTO_SUPABASE.md",
+    "05-agente/INSTRUCOES_AGENTE.md",
     "03-sessoes/2026-04-05.md",
     "02-tarefas/em-andamento.md",
     "02-tarefas/concluido.md",
@@ -199,13 +201,11 @@
     "00-contexto/CONTEXTO_EVOLUTION_API.md",
     "03-sessoes/2026-04-07.md",
     "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",
-    "05-agente/INSTRUCOES_AGENTE.md",
     "03-sessoes/2026-04-07-llm-agente.md",
     "03-sessoes/2026-04-03-n8n.md",
     "03-sessoes/2026-04-07-supabase.md",
     "ONBOARDING-PARCEIRO.md",
     "Bem-vindo.md",
-    "00-contexto/CONTEXTO_SUPABASE.md",
     "05-agente",
     "04-problemas",
     "03-sessoes",

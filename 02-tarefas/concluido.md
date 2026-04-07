@@ -36,6 +36,7 @@
 - [x] Tabela `pedidos` criada e validada (RLS ativo) — campo itens em JSONB
 - [x] RLS habilitado e corrigido em todas as tabelas
 - [x] Acesso direto ao banco via MCP do Supabase configurado e funcionando
+- [x] Tabela `configuracoes` criada (id, estabelecimento_id, nome_agente, horario_funcionamento, area_entrega, formas_pagamento, tempo_estimado_entrega, observacoes, criado_em)
 
 ---
 
