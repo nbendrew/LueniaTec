@@ -1,5 +1,5 @@
 # Concluído
-Última atualização: 07/04/2026
+Última atualização: 08/04/2026
 
 ---
 
@@ -52,6 +52,17 @@
 - [x] Insert mensagens (role: user)
 - [x] Select histórico de mensagens (filtro `contato_id` + `estabelecimento_id`, ordenado por `criado_em ASC`)
 - [x] Select cardápio retornando itens corretamente
+
+---
+
+## Marketing — Identidade Visual
+
+- [x] Paleta Luenia Tec definida: roxo `#7B2FBE` + preto `#0A0A0A`
+- [x] Paleta Luenia Foods definida: vermelho `#E81C1C` + amarelo `#FFD000`
+- [x] Logos oficiais com regras de posicionamento registradas na skill
+- [x] 5 estilos visuais definidos (A: Impacto 3D / B: Editorial texto / C: Editorial foto / D: AI aspiracional / E: AI educativo)
+- [x] Skill `criativos.skill` unificada (posts únicos + carrosséis)
+- [x] Gerador de imagens local criado (`gerador-luenia.html` via API Gemini)
 
 ---
 

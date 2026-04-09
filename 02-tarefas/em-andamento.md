@@ -1,52 +1,36 @@
 # Em Andamento
-Última atualização: 07/04/2026
+Última atualização: 08/04/2026
 
 ---
 
-## N8N — Fechamento do Fluxo Principal
+## N8N — Ajustes Finais e Teste
 
-### Próximos nós a construir (em ordem)
+O fluxo está completo de ponta a ponta. Faltam ajustes pontuais e o teste real.
 
-- [ ] Edit Fields — monta payload da LLM (system prompt substituído + histórico + cardápio + promoções)
-- [ ] HTTP Request — chama OpenAI (gpt-4o-mini)
-- [ ] Edit Fields — extrai resposta da LLM
-- [ ] Supabase — Insert mensagens (role: assistant)
-- [ ] HTTP Request — Evolution API envia resposta ao cliente
-- [ ] Implementar mecanismo de atendimento humano (detectar sinalização da Sofia, notificar estabelecimento, pausar fluxo)
+- [ ] Corrigir `=` no início do conteúdo salvo no Supabase — problema no modo do campo no nó extrairResposta (Edit Fields)
+- [ ] Limpar tabela `mensagens` no Supabase — dados sujos de testes acumulados
+- [ ] Testar fluxo de ponta a ponta com mensagem real chegando pelo WhatsApp
+- [ ] Tornar instância dinâmica na URL da Evolution API (hardcoded `wa4` por ora)
 
-### Pré-requisitos antes de montar o payload
-
-- [ ] Definir formatação do cardápio para injeção no prompt
-- [ ] Definir formatação das promoções — string vazia ou mensagem neutra quando não houver ativas
-- [ ] Alinhar nomenclatura dos campos dinâmicos com colunas do Supabase
-
-### Estado atual do fluxo
+### Fluxo completo — todos os nós
 
 ```
-Webhook
+Webhook → Split Out → IFfromMe
   ↓
-Split Out
-  ↓
-IFfromMe
-  ├── false → No Operation
-  └── true ↓
-Edit Fields — extracaoTelefone (TelefoneC + TelefoneE)   ✓
-  ↓
-Supabase — busca estabelecimento por TelefoneE            ✓
-  ↓
-HTTP Request — upsert contatos                            ✓
-  ↓
-Supabase — busca contato (retorna contato_id)             ✓
-  ↓
-Supabase — Insert mensagens (role: user)                  ✓
-  ↓
-Supabase — Select mensagens (histórico)                   ✓
-  ↓
-Supabase — Select cardápio (Execute Once)                 ✓
-  ↓
-Supabase — Select promoções (Execute Once)                ✓
-  ↓
-[próximos nós — ver lista acima]
+extracaoTelefone                                  ✓
+coletar_id_estabelecimentos                       ✓
+registrarContato (upsert)                         ✓
+coletar_id_contatos                               ✓
+registrar_mensagens (Insert user)                 ✓
+historico_mensagens (Select)                      ✓
+cardapio (Select — Execute Once)                  ✓
+promocoes (Select — Execute Once)                 ✓
+Get a row (Select configuracoes)                  ✓
+Code in JavaScript (monta payload)                ✓
+HTTP Request (OpenAI gpt-4o-mini)                 ✓
+extrairResposta (Edit Fields)                     ⚠ corrigir `=`
+Supabase Insert (assistant)                       ✓
+HTTP Request (Evolution API)                      ✓
 ```
 
 ---

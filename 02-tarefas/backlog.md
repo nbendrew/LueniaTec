@@ -51,6 +51,7 @@
 
 ## Skills — Luenia Foods
 
+- [x] Skill de criativos unificada (`criativos.skill`) — cobre posts únicos e carrosséis, 5 estilos, 2 perfis de marca
 - [ ] Construir skill de personal branding
 - [ ] Construir skill de prova social e cases (aguarda clientes reais)
 
