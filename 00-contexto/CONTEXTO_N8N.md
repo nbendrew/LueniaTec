@@ -158,22 +158,13 @@ HTTP Request (Evolution API)
 PRÓXIMOS NÓS A CONSTRUIR
 ================================================================================
 
-Bloqueadores resolvidos:
-✓ System prompt da Sofia — escrito e validado
-✓ Tabela `configuracoes` criada no Supabase
-✓ Formatação do cardápio definida: lista simples, uma linha por item
-  Exemplo: "- Pizza Calabresa (G): R$45,00"
+Fluxo completo. Pendências restantes:
 
-Sequência a implementar:
-1. Supabase — Select configuracoes (busca dados do estabelecimento por estabelecimento_id)
-2. Edit Fields — monta payload da LLM:
-   - system prompt com variáveis substituídas (nome, horário, área, pagamento, tempo, observações, cardápio, promoções)
-   - histórico no formato [{role, content}] ordenado por criado_em ASC
-   - mensagem nova do cliente
-3. HTTP Request — chama OpenAI (gpt-4o-mini)
-4. Edit Fields — extrai resposta da LLM
-5. Supabase — Insert mensagens (role: assistant)
-6. HTTP Request — Evolution API envia resposta ao cliente
+- Corrigir `=` no início do conteúdo salvo — problema no modo do campo no nó extrairResposta
+- Limpar tabela `mensagens` no Supabase (dados sujos de testes)
+- Testar fluxo de ponta a ponta com mensagem real chegando pelo WhatsApp
+- Tornar instância dinâmica na URL da Evolution API (hardcoded `wa4` por ora)
+- Implementar mecanismo de atendimento humano (detectar sinalização da Sofia, notificar estabelecimento, pausar fluxo)
 
 
 ================================================================================
@@ -198,7 +189,6 @@ PENDÊNCIAS / PRÓXIMOS PASSOS NESTE TEMA
 - Fechar os nós restantes e testar fluxo de ponta a ponta
 - Reativar RLS no Supabase com políticas corretas antes de produção
 
-
 ================================================================================
 HISTÓRICO DE DECISÕES E APRENDIZADOS
 ================================================================================
@@ -219,5 +209,11 @@ UUID do estabelecimento — nunca hardcoded. Sempre buscado dinamicamente pelo T
 Formatação do cardápio — lista simples, uma linha por item.
   Exemplo: "- Pizza Calabresa (G): R$45,00"
   Concatenada em string antes de injetar na variável {cardapio} do system prompt.
+
+Serialização do payload — JSON.stringify obrigatório no nó Code.
+  N8N não passa arrays corretamente para HTTP Request sem serialização manual.
+
+Quebras de linha na resposta da Sofia — JSON.stringify na expressão do body da Evolution API.
+  Resolve problema de markdown quebrando o payload JSON.
 
 ================================================================================

@@ -1,5 +1,5 @@
 # Em Andamento
-Última atualização: 08/04/2026
+Última atualização: 09/04/2026
 
 ---
 
@@ -35,7 +35,17 @@ HTTP Request (Evolution API)                      ✓
 
 ---
 
-## Supabase — Segurança
+## Bugs Identificados
 
+- [ ] **Pizza meia a meia retorna preço inteiro de cada sabor**
+  Comportamento atual: Sofia interpreta dois sabores como dois pedidos separados, cobrando o valor inteiro de cada um.
+  Comportamento esperado: reconhecer "meia calabresa e meia 4 queijos" como uma única pizza com preço de uma pizza inteira.
+  Onde corrigir: system prompt da Sofia — adicionar regra explícita de tratamento de pizza meia a meia.
+
+---
+
+## Supabase — Pendências
+
+- [ ] Adicionar coluna `endereco` (text, nullable) na tabela `estabelecimentos`
 - [ ] Reativar RLS com políticas corretas (desabilitado temporariamente durante debug)
 

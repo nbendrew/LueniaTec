@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00-contexto/CONTEXTO_GERAL_PROJETO.md",
+                "file": "05-agente/INSTRUCOES_AGENTE.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CONTEXTO_GERAL_PROJETO"
+              "title": "INSTRUCOES_AGENTE"
             }
           }
         ]
@@ -187,6 +187,7 @@
   },
   "active": "3c1c7d49fc57af93",
   "lastOpenFiles": [
+    "00-contexto/CONTEXTO_GERAL_PROJETO.md",
     "03-sessoes/2026-04-09-llm-agente.md",
     "03-sessoes/2026-04-09-supabase-final.md",
     "03-sessoes/2026-04-08-marketing-criativos.md",
@@ -201,7 +202,6 @@
     "00-contexto/CONTEXTO_N8N.md",
     "00-contexto/CONTEXTO_MARKETING_LUENIA_FOODS.md",
     "00-contexto/CONTEXTO_INFRAESTRUTURA_VPS.md",
-    "00-contexto/CONTEXTO_GERAL_PROJETO.md",
     "00-contexto/CONTEXTO_EVOLUTION_API.md",
     "03-sessoes/2026-04-07.md",
     "00-contexto/CONTEXTO_NEGOCIO_PRODUTO.md",

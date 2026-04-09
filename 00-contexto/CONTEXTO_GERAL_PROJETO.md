@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO GERAL DO PROJETO — AGENTE DE IA PARA PEDIDOS VIA WHATSAPP
 ================================================================================
-Última atualização: 05/04/2026
-Versão: 1.1
+Última atualização: 09/04/2026
+Versão: 1.2
 
 AVISO IMPORTANTE
 ----------------
@@ -30,8 +30,7 @@ com IA, focado em pizzarias e hamburguerias.
 A IA atende o cliente do início ao fim — desde o "oi" até a finalização do
 pedido, coletando escolha dos itens, endereço de entrega e método de pagamento.
 
-Fase atual: fluxo N8N em construção. Infraestrutura completa, banco de dados
-estruturado. Gargalo atual: montagem do payload e primeira chamada à LLM.
+Fase atual: fluxo N8N completo — todos os nós construídos, aguardando teste de ponta a ponta com WhatsApp real. Ajuste pontual pendente (caractere `=` no nó extrairResposta).
 
 Estrutura jurídica: ME no Simples Nacional — CNAE 6201-5/01
 (desenvolvimento de software não é permitido no MEI)
@@ -48,8 +47,8 @@ STACK UTILIZADA
 
 - N8N              → orquestração dos fluxos
 - Evolution API    → integração com WhatsApp (v2.3.7, hospedada na VPS)
-- OpenAI / Claude / Gemini → LLM do agente (em avaliação)
-- Supabase         → banco de dados (histórico, cardápio, promoções, pedidos)
+- OpenAI           → LLM do agente (gpt-4o-mini, definido para o MVP)
+- Supabase         → banco de dados (histórico, cardápio, promoções, pedidos, configuracoes)
 
 
 ================================================================================
@@ -159,12 +158,13 @@ Tabelas criadas e operacionais:
 - estabelecimentos  → registro dos clientes (donos de restaurante)
 - contatos          → clientes que entram em contato via WhatsApp
 - mensagens         → histórico completo das conversas (role: user/assistant)
-- cardapio          → itens disponíveis, consultados dinamicamente
+- cardapio          → itens por variação (ex: Calabresa M e Calabresa G como registros separados)
 - promocoes         → promoções com campo `ativo` (true/false)
 - pedidos           → registro dos pedidos finalizados (campo itens em JSONB)
+- configuracoes     → dados do agente por estabelecimento (inclui campo `observacoes` nullable)
 
 Observação: RLS habilitado em todas as tabelas.
-Temporariamente desabilitado durante debug do N8N — reativar com políticas antes da produção.
+Reativar com políticas corretas antes de ir para produção.
 
 
 ================================================================================
@@ -179,7 +179,11 @@ Posicionamento Luenia Foods:
 WhatsApp — para quem não tem margem pra erro."
 
 Skills de vendas e marketing já construídas (Estágio 1 e 2):
-- Prospecção, Copywriting, Objeções, Produção de conteúdo, Posicionamento
+- Prospecção, Copywriting, Objeções, Produção de conteúdo, Posicionamento, Carrosséis, Criativos (skill unificada)
+
+Identidade visual definida:
+- Luenia Foods: vermelho #E81C1C + amarelo #FFD000
+- Luenia Tec: roxo #7B2FBE + preto #0A0A0A
 
 
 ================================================================================

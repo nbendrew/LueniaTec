@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO DO CHAT — SUPABASE
 ================================================================================
-Última atualização: 07/04/2026
-Versão: 1.1
+Última atualização: 09/04/2026
+Versão: 1.2
 
 AVISO IMPORTANTE
 ----------------
@@ -64,17 +64,37 @@ Status: ✓ RLS ativo — 16 registros
 
 --- Tabela: cardapio ---
 Objetivo: itens disponíveis, consultados dinamicamente a cada chamada
-Obs: tamanhos e adicionais adiados para depois do MVP
-Status: ✓ RLS ativo — 7 itens de teste
+Formato: uma linha por variação (ex: Calabresa M e Calabresa G como registros separados)
+Obs: tamanhos como registros individuais — simplifica a lógica do MVP
+Status: ✓ RLS ativo — dados de teste inseridos (Calabresa M/G, 4 Queijos M/G, Hamburguer Clássico, Coca-Cola Lata)
 
 --- Tabela: promocoes ---
 Objetivo: promoções com campo `ativo` (boolean)
-Status: ✓ RLS ativo — 2 registros
+Status: ✓ RLS ativo
 
 --- Tabela: pedidos ---
 Objetivo: registro dos pedidos finalizados
 Campo itens: JSONB — flexível para o MVP
 Status: ✓ RLS ativo — sem registros ainda
+
+--- Tabela: configuracoes ---
+Objetivo: dados de configuração do agente por estabelecimento
+Campos: id, estabelecimento_id, nome_agente, horario_funcionamento, area_entrega,
+        formas_pagamento, tempo_estimado_entrega, observacoes (nullable), criado_em
+Obs: campo `observacoes` nullable — N8N injeta string vazia quando ausente
+Status: ✓ RLS ativo — registro de teste vinculado ao Teste_Estabelecimento
+
+
+================================================================================
+DADOS DE TESTE INSERIDOS
+================================================================================
+
+Estabelecimento: `Teste_Estabelecimento` — ativo
+Cardápio: Calabresa M, Calabresa G, 4 Queijos M, 4 Queijos G, Hamburguer Clássico, Coca-Cola Lata
+Configuracoes: registro vinculado ao Teste_Estabelecimento com todos os campos preenchidos
+
+Fluxo de onboarding para novo cliente:
+Passar os dados e cardápio no chat → Claude cadastra tudo via MCP sem precisar do SQL Editor.
 
 
 ================================================================================
@@ -123,5 +143,13 @@ HISTÓRICO DE DECISÕES E APRENDIZADOS
 07/04/2026 — Acesso MCP
   Claude acessa o banco diretamente via MCP do Supabase.
   Não é necessário usar o SQL Editor para consultas e alterações.
+
+09/04/2026 — Cardápio
+  Formato definido: uma linha por variação (ex: Calabresa M e Calabresa G como registros separados).
+  Simplifica a lógica do MVP sem precisar de campos de tamanho/adicionais.
+
+09/04/2026 — Tabela configuracoes
+  Campo `observacoes` adicionado como nullable (text).
+  Quando vazio, N8N injeta string vazia — Sofia ignora o bloco naturalmente.
 
 ================================================================================

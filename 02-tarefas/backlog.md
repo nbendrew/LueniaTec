@@ -1,14 +1,10 @@
 # Backlog
-Última atualização: 07/04/2026
+Última atualização: 09/04/2026
 
 ---
 
 ## LLM / Agente
 
-- [ ] Definir qual LLM será usada no MVP (OpenAI / Claude / Gemini)
-- [ ] Desenvolver system prompt base do agente
-- [ ] Definir formato de injeção do cardápio no prompt
-- [ ] Definir formato de injeção das promoções no prompt
 - [ ] Testar comportamento em situações de borda:
   - Pedido ambíguo ou incompleto ("uma pizza" sem sabor)
   - Múltiplos itens na mesma mensagem
