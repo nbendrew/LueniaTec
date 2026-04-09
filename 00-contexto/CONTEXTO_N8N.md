@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO DO CHAT — N8N
 ================================================================================
-Última atualização: 07/04/2026
-Versão: 1.2
+Última atualização: 09/04/2026
+Versão: 1.3
 
 AVISO IMPORTANTE
 ----------------
@@ -36,7 +36,7 @@ Usuário admin:  criado
 Status:         acessível e funcionando
 
 Webhook:        path `evoapi`, recebendo payload da Evolution API
-Fluxo:          em construção — primeira metade concluída
+Fluxo:          completo — todos os nós construídos, aguardando teste de ponta a ponta
 
 
 ================================================================================
@@ -77,28 +77,38 @@ Como o N8N funciona neste projeto:
 ```
 Webhook
   ↓
-Split Out
+classificar e filtrar (Split Out)
   ↓
 IFfromMe
   ├── false → No Operation
   └── true ↓
-Edit Fields — extracaoTelefone (TelefoneC + TelefoneE)   ✓
+extracaoTelefone (TelefoneC + TelefoneE)              ✓
   ↓
-Supabase — busca estabelecimento por TelefoneE            ✓
+coletar_id_estabelecimentos                            ✓
   ↓
-HTTP Request — upsert contatos                            ✓
+registrarContato (HTTP Request — upsert)               ✓
   ↓
-Supabase — busca contato (retorna contato_id)             ✓
+coletar_id_contatos                                    ✓
   ↓
-Supabase — Insert mensagens (role: user)                  ✓
+registrar_mensagens (Insert user)                      ✓
   ↓
-Supabase — Select mensagens (histórico)                   ✓
+historico_mensagens (Select)                           ✓
   ↓
-Supabase — Select cardápio (Execute Once)                 ✓
+cardapio (Select — Execute Once)                       ✓
   ↓
-Supabase — Select promoções (Execute Once)                ✓
+promocoes (Select — Execute Once)                      ✓
   ↓
-[próximos nós a construir — ver seção abaixo]
+Get a row (Select configuracoes)                       ✓
+  ↓
+Code in JavaScript (monta payload)                     ✓
+  ↓
+HTTP Request (OpenAI gpt-4o-mini)                      ✓
+  ↓
+extrairResposta (Edit Fields)                          ⚠ corrigir `=`
+  ↓
+Supabase Insert (assistant)                            ✓
+  ↓
+HTTP Request (Evolution API — envia ao cliente)        ✓
 ```
 
 Detalhes dos nós implementados:
@@ -125,6 +135,23 @@ Select mensagens (histórico)
 Select cardápio e Select promoções
 - Execute Once ativado em ambos — evita duplicação de resultados
 - Filtro: estabelecimento_id + ativo: true
+
+Code in JavaScript (payload LLM)
+- Monta system prompt com variáveis substituídas dinamicamente
+- Formata cardápio: `- Nome: R$preco — descricao`
+- Formata promoções: filtra apenas ativo: true
+- Monta histórico no formato [{role, content}]
+- Retorna body serializado via JSON.stringify (contorna limitação do N8N com arrays)
+
+HTTP Request (OpenAI)
+- Modelo: gpt-4o-mini
+- Body Content Type: Raw com Content-Type: application/json
+- Body: `={{ $json.body }}`
+
+HTTP Request (Evolution API)
+- URL: `http://187.127.7.78:8080/message/sendText/wa4`
+- Body: JSON.stringify para contornar quebras de linha e markdown na resposta
+- Obs: instância `wa4` hardcoded — tornar dinâmica futuramente
 
 
 ================================================================================
