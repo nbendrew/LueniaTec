@@ -1,8 +1,8 @@
 ================================================================================
 CONTEXTO DO CHAT — INFRAESTRUTURA / VPS
 ================================================================================
-Última atualização: março/2025
-Versão: 1.0
+Última atualização: 09/04/2026
+Versão: 1.2
 
 AVISO IMPORTANTE
 ----------------
@@ -31,6 +31,7 @@ CONFIGURAÇÃO ATUAL DA VPS
 
 Provedor:   Hostinger, plano KVM 1
 IP:         187.127.7.78
+Domínio:    srv1546072.hstgr.cloud (hostname padrão Hostinger)
 OS:         Ubuntu 24.04 LTS
 Acesso:     ssh root@187.127.7.78
 
@@ -41,14 +42,13 @@ CONTAINERS DOCKER EM EXECUÇÃO
 
 Todos os containers ficam em /opt/evolution/
 
-| serviço         | imagem                              | porta | pasta              |
-|-----------------|-------------------------------------|-------|--------------------|
+| serviço         | imagem                              | porta | pasta                    |
+|-----------------|-------------------------------------|-------|--------------------------|
 | PostgreSQL 15   | postgres:15                         | 5432  | /opt/evolution/postgres/ |
 | Redis Alpine    | redis:alpine                        | 6379  | /opt/evolution/redis/    |
 | Evolution API   | evoapicloud/evolution-api:v2.3.7    | 8080  | /opt/evolution/api/      |
-
-Container planejado:
 | N8N             | n8nio/n8n:latest                    | 5678  | /opt/n8n/                |
+
 
 
 ================================================================================
@@ -64,8 +64,30 @@ ESTRUTURA DE ARQUIVOS NA VPS
     ├── docker-compose.yaml
     └── .env
 
-/opt/n8n/                    ← ainda não criado
+/opt/n8n/
 └── docker-compose.yaml
+
+
+================================================================================
+CONFIGURAÇÃO DO N8N (docker-compose.yaml)
+================================================================================
+
+Variáveis de ambiente obrigatórias:
+
+  N8N_EDITOR_BASE_URL=http://srv1546072.hstgr.cloud:5678
+  WEBHOOK_URL=http://srv1546072.hstgr.cloud:5678
+  N8N_SECURE_COOKIE=false
+
+Motivo:
+- N8N_EDITOR_BASE_URL e WEBHOOK_URL: necessárias para que o N8N gere URLs
+  corretas (webhooks, OAuth callbacks) usando o domínio em vez do IP.
+  Sem isso, o N8N usa o hostname detectado automaticamente (IP),
+  causando falha no OAuth — Google e outros provedores não aceitam IP como redirect URI.
+- N8N_SECURE_COOKIE=false: necessário para acesso via HTTP sem HTTPS.
+  Revisitar e remover quando SSL for configurado.
+
+Recriar o container após qualquer alteração no docker-compose.yaml:
+  cd /opt/n8n && docker compose down && docker compose up -d
 
 
 ================================================================================
@@ -75,28 +97,84 @@ CREDENCIAIS E ACESSOS
 Evolution API Key:  tolokodedroga
 Evolution URL:      http://187.127.7.78:8080
 Evolution Manager:  http://187.127.7.78:8080/manager
-N8N URL (futuro):   http://187.127.7.78:5678
+N8N URL:            http://srv1546072.hstgr.cloud:5678
+Webhook path:       http://srv1546072.hstgr.cloud:5678/webhook/evoapi
+
+
+================================================================================
+WEBHOOK — PADRÃO PARA INSTÂNCIAS EVOLUTION API
+================================================================================
+
+Qualquer nova instância criada na Evolution API segue este curl,
+substituindo apenas o nome da instância:
+
+curl -X POST http://187.127.7.78:8080/webhook/set/NOME_INSTANCIA \
+  -H "apikey: tolokodedroga" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "webhook": {
+      "enabled": true,
+      "url": "http://srv1546072.hstgr.cloud:5678/webhook/evoapi",
+      "webhook_by_events": false,
+      "webhook_base64": false,
+      "events": ["MESSAGES_UPSERT"]
+    }
+  }'
+
+Instâncias ativas: wa4 e wa5 (ambas conectadas ao WhatsApp)
 
 
 ================================================================================
 PENDÊNCIAS / PRÓXIMOS PASSOS NESTE TEMA
 ================================================================================
 
-- Instalar N8N via Docker em /opt/n8n/
-- Avaliar configuração de firewall (portas expostas)
-- Planejar SSL/HTTPS com domínio próprio (futuro)
-- Configurar monitoramento básico dos containers
+- [ ] Atualizar webhook das instâncias wa4 e wa5 para URL com domínio
+      (verificar se ainda apontam para IP e corrigir via curl acima)
+- [ ] Configurar firewall — fechar portas desnecessariamente expostas
+- [ ] Configurar SSL/HTTPS com Nginx + Certbot (Let's Encrypt)
+- [ ] Após SSL: atualizar variáveis N8N para HTTPS, remover N8N_SECURE_COOKIE=false,
+      fechar porta 5678 no firewall (acesso só via Nginx na 443)
+- [ ] Considerar domínio próprio para produção (srv1546072.hstgr.cloud é hostname padrão Hostinger)
+- [ ] Configurar monitoramento básico dos containers (uptime, restart automático)
+
+
+================================================================================
+ROADMAP HTTPS — SEQUÊNCIA QUANDO CHEGAR A HORA
+================================================================================
+
+1. Instalar Nginx na VPS
+2. Configurar Nginx como reverse proxy: porta 443 → localhost:5678
+3. Instalar Certbot e gerar certificado SSL (Let's Encrypt) para o domínio
+4. Atualizar docker-compose do N8N:
+   - N8N_EDITOR_BASE_URL=https://<dominio>
+   - WEBHOOK_URL=https://<dominio>
+   - Remover N8N_SECURE_COOKIE=false
+5. Recriar o container do N8N
+6. Atualizar webhook nas instâncias Evolution API para URL HTTPS
+7. Fechar porta 5678 no firewall
+8. Atualizar redirect URI no Google Cloud Console para HTTPS
 
 
 ================================================================================
 HISTÓRICO DE DECISÕES E APRENDIZADOS
 ================================================================================
 
-No bloco de containers, adicionar a linha do N8N que antes estava como "planejado":
-| N8N  | n8nio/n8n:latest  | 5678  | /opt/n8n/  |
-No bloco de estrutura de arquivos, atualizar:
-/opt/n8n/
-└── docker-compose.yaml   ← criado e funcionando
+09/04/2026 — Domínio e OAuth
+  IP não funciona como redirect URI para OAuth (Google e demais provedores rejeitam).
+  Solução: usar o domínio srv1546072.hstgr.cloud no lugar do IP.
+  N8N_EDITOR_BASE_URL e WEBHOOK_URL devem ser definidas explicitamente no docker-compose.
+  Sem isso, o N8N usa o hostname detectado automaticamente (IP).
 
+09/04/2026 — N8N_SECURE_COOKIE=false
+  Necessário para acesso via HTTP sem HTTPS.
+  Sem isso, o navegador recusa cookies Secure em HTTP e o acesso é bloqueado.
+  Apenas para desenvolvimento — remover quando SSL estiver configurado.
+
+09/04/2026 — OAuth Google Calendar
+  Configuração que funcionou:
+  - redirect URI: http://srv1546072.hstgr.cloud:5678/rest/oauth2-credential/callback
+  - Mesma URI registrada no Google Cloud Console
+  - Email adicionado como usuário de teste (obrigatório com app em modo de teste)
+  - Google Calendar API ativada no projeto do Google Cloud
 
 ================================================================================

@@ -96,7 +96,7 @@ bashcurl -X POST http://187.127.7.78:8080/webhook/set/NOME_INSTANCIA \
   -d '{
     "webhook": {
       "enabled": true,
-      "url": "http://187.127.7.78:5678/webhook/evoapi",
+      "url": "http://srv1546072.hstgr.cloud:5678/webhook/evoapi",
       "webhook_by_events": false,
       "webhook_base64": false,
       "events": ["MESSAGES_UPSERT"]

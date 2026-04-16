@@ -3,6 +3,14 @@
 
 ---
 
+## Infraestrutura / VPS
+
+- [ ] Atualizar webhook das instâncias wa4 e wa5 para URL com domínio:
+      `http://srv1546072.hstgr.cloud:5678/webhook/evoapi`
+      (executar curl para cada instância conforme padrão em CONTEXTO_INFRAESTRUTURA_VPS.md)
+
+---
+
 ## N8N — Ajustes Finais e Teste
 
 O fluxo está completo de ponta a ponta. Faltam ajustes pontuais e o teste real.
