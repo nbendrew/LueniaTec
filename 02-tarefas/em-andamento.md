@@ -5,9 +5,8 @@
 
 ## Infraestrutura / VPS
 
-- [ ] Atualizar webhook das instâncias wa4 e wa5 para URL com domínio:
-      `http://srv1546072.hstgr.cloud:5678/webhook/evoapi`
-      (executar curl para cada instância conforme padrão em CONTEXTO_INFRAESTRUTURA_VPS.md)
+- [x] Atualizar webhook da instância wa4 para URL com domínio — concluído 09/04/2026
+- [x] Instância wa5 excluída — sem relevância para o projeto
 
 ---
 

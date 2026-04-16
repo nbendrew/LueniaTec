@@ -121,7 +121,8 @@ curl -X POST http://187.127.7.78:8080/webhook/set/NOME_INSTANCIA \
     }
   }'
 
-Instâncias ativas: wa4 e wa5 (ambas conectadas ao WhatsApp)
+Instâncias ativas: wa4 (conectada ao WhatsApp)
+Instância wa5: excluída em 09/04/2026 — sem relevância para o projeto
 
 
 ================================================================================

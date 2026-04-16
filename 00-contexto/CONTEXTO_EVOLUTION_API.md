@@ -35,6 +35,7 @@ URL base:     http://187.127.7.78:8080
 Dashboard:    http://187.127.7.78:8080/manager
 API Key:      tolokodedroga
 Instância:    wa4 (WhatsApp conectado e funcionando)
+Instância wa5 excluída em 09/04/2026.
 
 
 ================================================================================
