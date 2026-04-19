@@ -5,8 +5,8 @@
 
 ## Infraestrutura / VPS
 
-- [x] Atualizar webhook da instância wa4 para URL com domínio — concluído 09/04/2026
-- [x] Instância wa5 excluída — sem relevância para o projeto
+- [x] Webhook da instância wa4 atualizado para IP gateway `172.18.0.1` — concluído 19/04/2026
+- [x] N8N conectado à rede `evolution-net` — configuração persistida no docker-compose
 
 ---
 

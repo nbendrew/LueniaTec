@@ -98,7 +98,8 @@ Evolution API Key:  tolokodedroga
 Evolution URL:      http://187.127.7.78:8080
 Evolution Manager:  http://187.127.7.78:8080/manager
 N8N URL:            http://srv1546072.hstgr.cloud:5678
-Webhook path:       http://srv1546072.hstgr.cloud:5678/webhook/evoapi
+Webhook path:       http://172.18.0.1:5678/webhook/evoapi (IP gateway da rede evolution-net — uso interno entre containers)
+N8N URL pública:    http://srv1546072.hstgr.cloud:5678
 
 
 ================================================================================
@@ -114,7 +115,7 @@ curl -X POST http://187.127.7.78:8080/webhook/set/NOME_INSTANCIA \
   -d '{
     "webhook": {
       "enabled": true,
-      "url": "http://srv1546072.hstgr.cloud:5678/webhook/evoapi",
+      "url": "http://172.18.0.1:5678/webhook/evoapi",
       "webhook_by_events": false,
       "webhook_base64": false,
       "events": ["MESSAGES_UPSERT"]
@@ -129,8 +130,7 @@ Instância wa5: excluída em 09/04/2026 — sem relevância para o projeto
 PENDÊNCIAS / PRÓXIMOS PASSOS NESTE TEMA
 ================================================================================
 
-- [ ] Atualizar webhook das instâncias wa4 e wa5 para URL com domínio
-      (verificar se ainda apontam para IP e corrigir via curl acima)
+- [x] Webhook da instância wa4 atualizado para IP gateway (172.18.0.1) — concluído 19/04/2026
 - [ ] Configurar firewall — fechar portas desnecessariamente expostas
 - [ ] Configurar SSL/HTTPS com Nginx + Certbot (Let's Encrypt)
 - [ ] Após SSL: atualizar variáveis N8N para HTTPS, remover N8N_SECURE_COOKIE=false,
@@ -177,5 +177,24 @@ HISTÓRICO DE DECISÕES E APRENDIZADOS
   - Mesma URI registrada no Google Cloud Console
   - Email adicionado como usuário de teste (obrigatório com app em modo de teste)
   - Google Calendar API ativada no projeto do Google Cloud
+
+19/04/2026 — Comunicação entre containers (Evolution API → N8N)
+  Containers em redes Docker separadas não se comunicam via 127.0.0.1 nem via domínio.
+  A Evolution API (evolution-net) não alcançava o N8N (n8n_default) por nenhum desses endereços.
+  Solução: usar o IP do gateway da rede Docker da Evolution API.
+  Comando para descobrir o gateway: docker network inspect evolution-net | grep Gateway
+  Gateway encontrado: 172.18.0.1
+  URL correta do webhook: http://172.18.0.1:5678/webhook/evoapi
+  N8N conectado à rede evolution-net via: docker network connect evolution-net n8n
+  Configuração persistida no docker-compose — bloco networks com evolution-net como external.
+
+19/04/2026 — docker-compose do N8N com duas redes
+  O N8N precisa estar em duas redes simultaneamente: n8n_default (sua própria) e evolution-net (da Evolution API).
+  Configuração correta no docker-compose:
+    services.n8n.networks: [n8n_default, evolution-net]
+    networks.n8n_default.name: n8n_default
+    networks.evolution-net.external: true
+  Ao recriar o container, se houver erro de label na rede n8n_default:
+    docker network rm n8n_default && docker compose up -d
 
 ================================================================================
