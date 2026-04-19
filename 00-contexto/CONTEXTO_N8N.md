@@ -215,5 +215,8 @@ Serialização do payload — JSON.stringify obrigatório no nó Code.
 
 Quebras de linha na resposta da Sofia — JSON.stringify na expressão do body da Evolution API.
   Resolve problema de markdown quebrando o payload JSON.
+Markdown da OpenAI para WhatsApp — resposta da LLM retorna `**texto**`.
+  WhatsApp usa `*texto*`. Corrigido no nó extrairResposta com replace:
+  .replace(/\*\*(.*?)\*\*/g, '*$1*')
 
 ================================================================================
