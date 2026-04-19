@@ -158,11 +158,8 @@ HTTP Request (Evolution API)
 PRÓXIMOS NÓS A CONSTRUIR
 ================================================================================
 
-Fluxo completo. Pendências restantes:
+Fluxo completo com debounce. Pendências restantes:
 
-- Corrigir `=` no início do conteúdo salvo — problema no modo do campo no nó extrairResposta
-- Limpar tabela `mensagens` no Supabase (dados sujos de testes)
-- Testar fluxo de ponta a ponta com mensagem real chegando pelo WhatsApp
 - Tornar instância dinâmica na URL da Evolution API (hardcoded `wa4` por ora)
 - Implementar mecanismo de atendimento humano (detectar sinalização da Sofia, notificar estabelecimento, pausar fluxo)
 
@@ -222,6 +219,12 @@ Markdown OpenAI → WhatsApp — resposta da LLM retorna `**texto**`.
 
 Teste de ponta a ponta — fluxo funcionando com mensagem real via WhatsApp.
   Sofia respondendo corretamente com cardápio e atendimento.
+
+Debounce com acumulação — race condition resolvido com tabela `fila_mensagens`.
+  Fluxo: Insert fila → Wait 10s → Select não processados → IF length > 0 →
+  Code concatena → Update processado = true → registrar_mensagens com conteúdo concatenado.
+  Garante que múltiplas mensagens rápidas chegam à LLM como um único bloco de texto.
+  Fluxos secundários encerram no IF quando fila já foi processada.
 Markdown da OpenAI para WhatsApp — resposta da LLM retorna `**texto**`.
   WhatsApp usa `*texto*`. Corrigido no nó extrairResposta com replace:
   .replace(/\*\*(.*?)\*\*/g, '*$1*')
