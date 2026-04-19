@@ -104,7 +104,7 @@ Code in JavaScript (monta payload)                     ✓
   ↓
 HTTP Request (OpenAI gpt-4o-mini)                      ✓
   ↓
-extrairResposta (Edit Fields)                          ⚠ corrigir `=`
+extrairResposta (Edit Fields)                          ✓
   ↓
 Supabase Insert (assistant)                            ✓
   ↓
@@ -215,6 +215,13 @@ Serialização do payload — JSON.stringify obrigatório no nó Code.
 
 Quebras de linha na resposta da Sofia — JSON.stringify na expressão do body da Evolution API.
   Resolve problema de markdown quebrando o payload JSON.
+
+Markdown OpenAI → WhatsApp — resposta da LLM retorna `**texto**`.
+  WhatsApp usa `*texto*`. Corrigido no nó extrairResposta com:
+  .replace(/\*\*(.*?)\*\*/g, '*$1*')
+
+Teste de ponta a ponta — fluxo funcionando com mensagem real via WhatsApp.
+  Sofia respondendo corretamente com cardápio e atendimento.
 Markdown da OpenAI para WhatsApp — resposta da LLM retorna `**texto**`.
   WhatsApp usa `*texto*`. Corrigido no nó extrairResposta com replace:
   .replace(/\*\*(.*?)\*\*/g, '*$1*')
